@@ -1,0 +1,246 @@
+/*
+  style.css = how the page LOOKS.
+*/
+
+/* ---------- 1. Variables: change the theme here ---------- */
+:root {
+  --color-primary: #2e7d32;   /* main green */
+  --color-primary-dark: #1b5e20; /* darker green for gradients */
+  --color-accent: #c5e1a5;    /* light green highlight */
+  --color-text: #222222;
+  --color-bg: #ffffff;
+  --color-bg-alt: #eef6ee;    /* pale green section background */
+  --font-main: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --max-width: 1100px;
+}
+
+/* ---------- 2. Base ---------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-main);
+  color: var(--color-text);
+  background: var(--color-bg);
+  line-height: 1.6;
+}
+
+.container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+.section {
+  padding: 80px 0;
+}
+
+.section-alt {
+  background: var(--color-bg-alt);
+}
+
+.center {
+  text-align: center;
+}
+
+/* ---------- 3. Hero ---------- */
+/* min-height: 100vh = fill the whole screen (vh = % of viewport height) */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;     /* stack items vertically */
+  justify-content: center;    /* centre vertically */
+  align-items: center;        /* centre horizontally */
+  text-align: center;
+  padding: 24px 16px;
+    background:
+    linear-gradient(rgba(27, 94, 32, 0.6), rgba(27, 94, 32, 0.6)),  /* green tint on top */
+    url("images/hero.jpg") center / cover no-repeat;                       /* your image underneath */
+  color: #fff;
+  position: relative;         /* lets .scroll-hint position itself inside */
+}
+
+.logo {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;         /* makes it a circle */
+  object-fit: cover;          /* for the real <img>: fills circle without stretching */
+  margin-bottom: 24px;
+}
+
+/* Temporary look until the real logo is added */
+.logo-placeholder {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 3px dashed var(--color-accent);
+  color: var(--color-accent);
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+.hero h1 {
+  font-size: 3rem;
+  margin: 0;
+}
+
+.tagline {
+  font-size: 1.2rem;
+  opacity: 0.9;
+}
+
+.scroll-hint {
+  position: absolute;
+  bottom: 24px;
+  color: #fff;
+  font-size: 2rem;
+  text-decoration: none;
+  animation: bounce 2s infinite;
+}
+
+/* @keyframes defines an animation; "bounce" is used just above */
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(8px); }
+}
+
+/* ---------- 4. Find Us (two columns) ---------- */
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;  /* two equal columns */
+  gap: 48px;
+  align-items: center;
+}
+
+/* The map box keeps its shape; the real <iframe> will fill it */
+.map {
+  aspect-ratio: 4 / 3;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.map iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.map-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #eee;
+  border: 2px dashed #aaa;
+  border-radius: 12px;
+  color: #777;
+}
+
+.info h2 {
+  margin-top: 0;
+  color: var(--color-primary);
+}
+
+/* ---------- 5. Socials ---------- */
+.social-links {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;            /* wrap onto a new line on narrow screens */
+  margin-top: 24px;
+}
+
+.social-btn {
+  display: inline-block;
+  min-width: 160px;
+  padding: 14px 24px;
+  border-radius: 999px;       /* pill shape */
+  color: #fff;
+  font-weight: 600;
+  text-decoration: none;
+  transition: transform 0.2s;
+}
+
+.social-btn:hover {
+  transform: translateY(-3px);
+}
+
+.tiktok {
+  background: #111;
+}
+
+.facebook {
+  background: #1877f2;
+}
+
+.instagram {
+  background: linear-gradient(45deg, #f09433, #dc2743, #bc1888);
+}
+
+/* "In progress" state: greyed out, not clickable, with a striped barrier */
+.social-btn.disabled {
+  background: repeating-linear-gradient(
+    45deg,
+    #bdbdbd,
+    #bdbdbd 10px,
+    #9e9e9e 10px,
+    #9e9e9e 20px
+  );                          /* diagonal "construction" stripes */
+  color: #333;
+  cursor: not-allowed;
+}
+
+.social-btn.disabled:hover {
+  transform: none;            /* no lift effect, since it can't be clicked */
+}
+
+.social-btn small {
+  display: block;
+  font-weight: 400;
+  font-size: 0.75rem;
+}
+
+/* ---------- 6. Scroll reveal ---------- */
+/* Sections start invisible and slightly lower... */
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+/* ...and script.js adds .visible when they scroll into view */
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ---------- 7. Footer ---------- */
+.site-footer {
+  background: #1b1b1b;
+  color: #ccc;
+  text-align: center;
+  padding: 24px 16px;
+  font-size: 0.9rem;
+}
+
+/* ---------- 8. Phones (768px wide or less) ---------- */
+@media (max-width: 768px) {
+  .hero h1 {
+    font-size: 2.2rem;
+  }
+
+  /* Stack map above text */
+  .two-col {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+}

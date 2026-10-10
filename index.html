@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<!--
+  index.html = the STRUCTURE of the page.
+  Layout, top to bottom:
+    1. Hero    – logo + store name
+    2. Find Us – Google Maps placeholder (left) + text placeholder (right)
+    3. Socials – TikTok / Instagram links (fade in as you scroll)
+    4. Footer
+-->
+<html lang="en">
+<head>
+  <link rel="icon" href="images/favicon.png" type="image/png">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Great Luck Minimart</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ===== 1. HERO: the first thing visitors see ===== -->
+  <header class="hero">
+    <!--
+      LOGO PLACEHOLDER
+      When you have the logo, save it as logo.png in this folder and
+      replace the <div> below with:
+        <img src="logo.png" alt="Great Luck Minimart logo" class="logo">
+    -->
+    <img src="images/logo.png" alt="Great Luck Minimart logo" class="logo">
+
+    <h1>Great Luck Minimart</h1>
+    <p class="tagline">Your neighbourhood minimart</p>
+
+    <!-- Arrow hinting the visitor to scroll; links to the next section -->
+    <a href="#find-us" class="scroll-hint" aria-label="Scroll down">↓</a>
+  </header>
+
+  <main>
+
+    <!-- ===== 2. FIND US: map on the left, text on the right ===== -->
+    <section id="find-us" class="section reveal">
+      <div class="container two-col">
+
+        <!--
+          MAP PLACEHOLDER
+          To add the real map:
+            1. Search the shop on Google Maps
+            2. Click Share → Embed a map → Copy HTML
+            3. Replace the <div class="map-placeholder"> below with that <iframe>
+        -->
+        <div class="map">
+          <div class="map-placeholder">Google Maps goes here</div>
+        </div>
+
+        <!-- TEXT PLACEHOLDER: swap in real details later -->
+        <div class="info">
+          <h2>Visit Us</h2>
+          <p>Short description of the minimart goes here.</p>
+          <p><strong>Address:</strong> Blk 000 Street Name, #01-00, Singapore 000000</p>
+          <p><strong>Opening hours:</strong> Mon – Sun, 7:00am – 11:00pm</p>
+          <p><strong>Phone:</strong> 6000 0000</p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===== 3. SOCIALS ===== -->
+    <section id="socials" class="section section-alt reveal">
+      <div class="container center">
+        <h2>Follow Us</h2>
+        <p>See what's new in store.</p>
+
+        <div class="social-links">
+          <!--
+            target="_blank" opens the link in a new tab;
+            rel="noopener" is a security best practice that goes with it.
+          -->
+          <a href="https://www.tiktok.com/@great.luck.myanmar"
+             class="social-btn tiktok" target="_blank" rel="noopener">TikTok</a>
+
+          <a href="https://www.facebook.com/p/%E1%80%99%E1%80%BC%E1%80%94%E1%80%BA%E1%80%99%E1%80%AC%E1%80%99%E1%80%AE%E1%80%94%E1%80%AE%E1%80%99%E1%80%90%E1%80%BA-The-Great-Luck-61589895800291/"
+             class="social-btn facebook" target="_blank" rel="noopener">Facebook</a>
+
+          <!--
+            Instagram isn't ready yet, so this is a <span>, not an <a>:
+            a span has no link, so it can't be clicked.
+            When the account is live, change it to:
+            <a href="INSTAGRAM_URL" class="social-btn instagram" target="_blank" rel="noopener">Instagram</a>
+          -->
+          <span class="social-btn instagram disabled" aria-disabled="true">
+            Instagram
+            <small>In progress</small>
+          </span>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===== 4. FOOTER ===== -->
+  <footer class="site-footer">
+    <p>&copy; <span id="year"></span> Great Luck Minimart</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
