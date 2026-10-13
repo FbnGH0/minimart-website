@@ -528,12 +528,24 @@ section {
   undo the push, so our own nav bar stays in place.
   !important is needed because Google sets these with inline styles.
 */
+/*
+  Google wraps its toolbar in a <div class="skiptranslate"> placed directly
+  inside <body>. The ">" means "direct child only", so this hides the
+  toolbar but not anything else Google marks with that class.
+*/
+body > .skiptranslate {
+  display: none !important;
+}
+
+/* Older versions of the toolbar, just in case */
 .goog-te-banner-frame {
   display: none !important;
 }
 
+/* Undo the space Google pushes the page down by */
 body {
   top: 0 !important;
+  position: static !important;
 }
 
 /* ---------- 8. Phones (768px wide or less) ---------- */
@@ -585,5 +597,103 @@ body {
   .nav-links a {
     padding: 6px 12px;
     font-size: 0.9rem;
+  }
+}
+
+/* ---------- 9. Products page ---------- */
+/*
+  Everything below is only used on products.html (moved here from the
+  <style> block that used to be in its <head>).
+
+  products.html has <body class="products-page">. Starting a rule with
+  ".products-page" means it ONLY applies on that page, so it can't
+  affect the home page.
+*/
+
+/* On the home page the nav slides in after the hero. The products page
+   has no big hero, so keep the nav visible from the start. */
+.products-page .site-nav {
+  transform: translateY(0);
+}
+
+/* Short version of the hero: same green tint and photo, but not full
+   screen. Extra top padding keeps the title clear of the nav bar. */
+.hero.page-hero {
+  min-height: 45vh;
+  padding-top: 90px;
+}
+
+/* Highlights the link for the page you're on */
+.nav-links a.current {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* Products section: fills at least the rest of the screen */
+.products-section {
+  min-height: 55vh;
+}
+
+/* Responsive grid: as many 260px+ cards per row as fit.
+   Wide screens get several columns, phones get one. */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 28px;
+  margin-top: 40px;
+}
+
+/* One product card; same look as .video-card on the home page */
+.product-card {
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;           /* keeps the photo inside the rounded corners */
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s;
+}
+
+.product-card:hover {
+  transform: translateY(-3px);
+}
+
+.product-card img {
+  width: 100%;
+  aspect-ratio: 4 / 3;        /* every photo gets the same shape */
+  object-fit: cover;          /* crops to fill, never stretches */
+  display: block;
+}
+
+.product-body {
+  padding: 18px 20px 22px;
+  text-align: left;
+}
+
+.product-body h3 {
+  margin: 0 0 6px;
+  font-size: 1.25rem;
+  color: var(--color-primary);
+}
+
+.product-body p {
+  margin: 0 0 12px;
+  color: #444;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+/* Price sits in the same light green pill as the nav "Products" button */
+.product-price {
+  display: inline-block;
+  background: var(--color-accent);
+  color: var(--color-primary-dark);
+  font-weight: 700;
+  padding: 4px 14px;
+  border-radius: 999px;
+}
+
+@media (max-width: 768px) {
+  .hero.page-hero {
+    min-height: 35vh;
   }
 }

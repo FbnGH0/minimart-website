@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <!--
   products.html = the PRODUCTS page.
-  It reuses style.css and script.js exactly as they are, so nothing in your
-  existing files needs to change. The few styles that only this page needs
-  live in the <style> block in the <head> below.
+  It shares style.css and script.js with the home page. Styles used only
+  on this page are in section 9 of style.css, and <body class="products-page">
+  makes sure they only apply here.
 
   Layout, top to bottom:
     0. Nav bar      – same as the home page, but always visible here
@@ -22,103 +22,8 @@
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
   <link rel="stylesheet" href="style.css">
 
-  <!--
-    Styles used only on this page. They use the same colour variables as
-    style.css (--color-primary etc.), so changing the theme there changes
-    this page too. Later you can cut and paste this block into the bottom of
-    style.css if you'd rather keep all styles in one place.
-  -->
-  <style>
-    /* On the home page the nav slides in after the hero. Here there is no
-       big hero, so keep the nav visible from the start. */
-    .site-nav {
-      transform: translateY(0);
-    }
-
-    /* Short version of the hero: same green tint and photo, but not full
-       screen. Extra top padding keeps the title clear of the nav bar. */
-    .hero.page-hero {
-      min-height: 45vh;
-      padding-top: 90px;
-    }
-
-    /* Highlights the link for the page you're on */
-    .nav-links a.current {
-      background: rgba(255, 255, 255, 0.15);
-    }
-
-    /* Products section: fills at least the rest of the screen */
-    .products-section {
-      min-height: 55vh;
-    }
-
-    /* Responsive grid: as many 260px+ cards per row as fit.
-       Wide screens get several columns, phones get one. */
-    .product-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: 28px;
-      margin-top: 40px;
-    }
-
-    /* One product card; same look as .video-card on the home page */
-    .product-card {
-      background: #fff;
-      border-radius: 16px;
-      overflow: hidden;           /* keeps the photo inside the rounded corners */
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
-      display: flex;
-      flex-direction: column;
-      transition: transform 0.2s;
-    }
-
-    .product-card:hover {
-      transform: translateY(-3px);
-    }
-
-    .product-card img {
-      width: 100%;
-      aspect-ratio: 4 / 3;        /* every photo gets the same shape */
-      object-fit: cover;          /* crops to fill, never stretches */
-      display: block;
-    }
-
-    .product-body {
-      padding: 18px 20px 22px;
-      text-align: left;
-    }
-
-    .product-body h3 {
-      margin: 0 0 6px;
-      font-size: 1.25rem;
-      color: var(--color-primary);
-    }
-
-    .product-body p {
-      margin: 0 0 12px;
-      color: #444;
-      font-size: 1rem;
-      line-height: 1.5;
-    }
-
-    /* Price sits in the same light green pill as the nav "Products" button */
-    .product-price {
-      display: inline-block;
-      background: var(--color-accent);
-      color: var(--color-primary-dark);
-      font-weight: 700;
-      padding: 4px 14px;
-      border-radius: 999px;
-    }
-
-    @media (max-width: 768px) {
-      .hero.page-hero {
-        min-height: 35vh;
-      }
-    }
-  </style>
 </head>
-<body>
+<body class="products-page">
 
   <!-- ===== 0. NAV BAR: same as the home page ===== -->
   <!-- Links to the home page sections need "index.html" in front of the # -->
@@ -142,7 +47,7 @@
     ===== 1. PAGE HEADER =====
     Keeps class="hero" because script.js looks for an element with that
     class (it uses it to decide when to show the nav). "page-hero" is the
-    shorter version defined in the <style> block above.
+    shorter version defined in section 9 of style.css.
   -->
   <header class="hero page-hero" id="top">
     <h1>Our Products</h1>
