@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<!--
+  products.html = the PRODUCTS page.
+  It reuses style.css and script.js exactly as they are, so nothing in your
+  existing files needs to change. The few styles that only this page needs
+  live in the <style> block in the <head> below.
+
+  Layout, top to bottom:
+    0. Nav bar      – same as the home page, but always visible here
+    1. Page header  – short version of the home page hero
+    2. Products     – a grid of product cards (one sample for now)
+    3. Footer
+    4. Google Translate – same floating language button
+-->
+<html lang="en">
+<head>
+  <link rel="icon" href="images/favicon.png" type="image/png">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Products | Great Luck Minimart</title>
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+
+  <!--
+    Styles used only on this page. They use the same colour variables as
+    style.css (--color-primary etc.), so changing the theme there changes
+    this page too. Later you can cut and paste this block into the bottom of
+    style.css if you'd rather keep all styles in one place.
+  -->
+  <style>
+    /* On the home page the nav slides in after the hero. Here there is no
+       big hero, so keep the nav visible from the start. */
+    .site-nav {
+      transform: translateY(0);
+    }
+
+    /* Short version of the hero: same green tint and photo, but not full
+       screen. Extra top padding keeps the title clear of the nav bar. */
+    .hero.page-hero {
+      min-height: 45vh;
+      padding-top: 90px;
+    }
+
+    /* Highlights the link for the page you're on */
+    .nav-links a.current {
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    /* Products section: fills at least the rest of the screen */
+    .products-section {
+      min-height: 55vh;
+    }
+
+    /* Responsive grid: as many 260px+ cards per row as fit.
+       Wide screens get several columns, phones get one. */
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 28px;
+      margin-top: 40px;
+    }
+
+    /* One product card; same look as .video-card on the home page */
+    .product-card {
+      background: #fff;
+      border-radius: 16px;
+      overflow: hidden;           /* keeps the photo inside the rounded corners */
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.2s;
+    }
+
+    .product-card:hover {
+      transform: translateY(-3px);
+    }
+
+    .product-card img {
+      width: 100%;
+      aspect-ratio: 4 / 3;        /* every photo gets the same shape */
+      object-fit: cover;          /* crops to fill, never stretches */
+      display: block;
+    }
+
+    .product-body {
+      padding: 18px 20px 22px;
+      text-align: left;
+    }
+
+    .product-body h3 {
+      margin: 0 0 6px;
+      font-size: 1.25rem;
+      color: var(--color-primary);
+    }
+
+    .product-body p {
+      margin: 0 0 12px;
+      color: #444;
+      font-size: 1rem;
+      line-height: 1.5;
+    }
+
+    /* Price sits in the same light green pill as the nav "Products" button */
+    .product-price {
+      display: inline-block;
+      background: var(--color-accent);
+      color: var(--color-primary-dark);
+      font-weight: 700;
+      padding: 4px 14px;
+      border-radius: 999px;
+    }
+
+    @media (max-width: 768px) {
+      .hero.page-hero {
+        min-height: 35vh;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== 0. NAV BAR: same as the home page ===== -->
+  <!-- Links to the home page sections need "index.html" in front of the # -->
+  <nav class="site-nav" aria-label="Main">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-brand notranslate">
+        <img src="images/logo.png" alt="">
+        <span>Great Luck Minimart</span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="index.html#find-us">Visit Us</a></li>
+        <li><a href="index.html#socials">Follow Us</a></li>
+        <!-- "current" marks the page you're on -->
+        <li><a href="products.html" class="nav-cta current" aria-current="page">Products</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!--
+    ===== 1. PAGE HEADER =====
+    Keeps class="hero" because script.js looks for an element with that
+    class (it uses it to decide when to show the nav). "page-hero" is the
+    shorter version defined in the <style> block above.
+  -->
+  <header class="hero page-hero" id="top">
+    <h1>Our Products</h1>
+    <p class="tagline">Fresh finds and favourites from home</p>
+  </header>
+
+  <main>
+
+    <!-- ===== 2. PRODUCTS ===== -->
+    <section id="products" class="section section-alt products-section reveal">
+      <div class="container center">
+        <h2>What's on the Shelf</h2>
+        <p>Short description of your products goes here.</p>
+
+        <!--
+          PRODUCT GRID
+          To add a product, copy one whole <article class="product-card">
+          block and paste it below the last one, then change the photo,
+          name, description and price. The grid arranges them automatically.
+        -->
+        <div class="product-grid">
+
+          <!-- ----- Sample product ----- -->
+          <article class="product-card">
+            <!--
+              Placeholder photo from picsum.photos (random stock images).
+              To use your own: put the file in the images/ folder and change
+              the src to e.g. "images/nan-gyi-thoke.jpg".
+              Keep the alt text: it describes the photo for screen readers.
+            -->
+            <img src="https://picsum.photos/seed/nangyithoke/600/450"
+                 alt="Nan Gyi Thoke noodle salad"
+                 loading="lazy">
+            <div class="product-body">
+              <h3>Nan Gyi Thoke</h3>
+              <p>Burmese rice noodle salad tossed with chicken curry, chilli oil, crunchy fried onions and fresh herbs.</p>
+              <span class="product-price">$0.00</span>
+            </div>
+          </article>
+
+          <!-- Paste more product cards here -->
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===== 3. FOOTER ===== -->
+  <footer class="site-footer">
+    <p>&copy; <span id="year"></span> Great Luck Minimart</p>
+  </footer>
+
+  <!--
+    ===== 4. GOOGLE TRANSLATE =====
+    Identical to the home page. The chosen language is remembered in a
+    cookie, so it carries over when visitors move between pages.
+  -->
+  <div class="translate-box notranslate">
+    <i class="fa-solid fa-globe" aria-hidden="true"></i>
+    <select id="lang-select" aria-label="Choose language">
+      <option value="en">English</option>
+      <option value="my">မြန်မာ</option>
+      <option value="zh-CN">中文</option>
+      <option value="ms">Bahasa Melayu</option>
+      <option value="ta">தமிழ்</option>
+    </select>
+    <div id="google_translate_element"></div>
+  </div>
+
+  <script src="script.js"></script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+</body>
+</html>
