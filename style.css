@@ -61,19 +61,31 @@ body {
   align-items: center;        /* centre horizontally */
   text-align: center;
   padding: 24px 16px;
-    background:
-    linear-gradient(rgba(27, 94, 32, 0.6), rgba(27, 94, 32, 0.6)),  /* green tint on top */
-    url("images/hero.jpg") center / cover no-repeat;                       /* your image underneath */
+  /*
+    Deep green tint: darker at the top and bottom, slightly lighter in the
+    middle. Keeps the green theme but is dark enough for white text to pop.
+  */
+  background:
+    linear-gradient(
+      rgba(8, 35, 12, 0.75),
+      rgba(20, 70, 28, 0.6) 50%,
+      rgba(8, 35, 12, 0.8)
+    ),
+    url("images/hero.jpg") center / cover no-repeat;
   color: #fff;
   position: relative;         /* lets .scroll-hint position itself inside */
 }
 
 .logo {
-  width: 160px;
-  height: 160px;
+  width: 200px;
+  height: 200px;
   border-radius: 50%;         /* makes it a circle */
-  object-fit: cover;          /* for the real <img>: fills circle without stretching */
-  margin-bottom: 24px;
+  object-fit: contain;        /* shows the whole logo, so the phone numbers aren't cut off */
+  margin-bottom: 28px;
+  /* Soft glow so the logo lifts off the background */
+  box-shadow:
+    0 0 0 4px rgba(255, 255, 255, 0.85),   /* thin white ring */
+    0 8px 30px rgba(0, 0, 0, 0.5);         /* drop shadow */
 }
 
 /* Temporary look until the real logo is added */
@@ -88,13 +100,26 @@ body {
 }
 
 .hero h1 {
-  font-size: 3rem;
+  font-size: 3.2rem;
+  font-weight: 800;           /* bolder title */
+  letter-spacing: 0.5px;
   margin: 0;
 }
 
+/* Two shadows: a tight one for crisp edges, a wide one for contrast */
+.hero h1,
 .tagline {
-  font-size: 1.2rem;
-  opacity: 0.9;
+  text-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.7),
+    0 4px 20px rgba(0, 0, 0, 0.6);
+}
+
+/* Tagline in the light green accent so it ties to the theme */
+.tagline {
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: var(--color-accent);
+  margin-top: 8px;
 }
 
 .scroll-hint {
@@ -103,6 +128,7 @@ body {
   color: #fff;
   font-size: 2rem;
   text-decoration: none;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.7);
   animation: bounce 2s infinite;
 }
 
@@ -236,6 +262,11 @@ body {
 @media (max-width: 768px) {
   .hero h1 {
     font-size: 2.2rem;
+  }
+
+  .logo {
+    width: 160px;
+    height: 160px;
   }
 
   /* Stack map above text */
