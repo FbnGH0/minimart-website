@@ -2,10 +2,13 @@
 <!--
   index.html = the STRUCTURE of the page.
   Layout, top to bottom:
+    0. Nav bar – hidden on the hero, slides down once you scroll past it
     1. Hero    – logo + store name
-    2. Find Us – Google Maps placeholder (left) + text placeholder (right)
-    3. Socials – TikTok / Instagram links (fade in as you scroll)
+    2. Find Us – centred intro on top, then map (left) + details (right);
+                 fills the whole screen
+    3. Socials – TikTok / Facebook / Instagram buttons, each with its video below
     4. Footer
+    5. Google Translate – floating language button, bottom-right
 -->
 <html lang="en">
 <head>
@@ -13,21 +16,47 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Great Luck Minimart</title>
+  <!--
+    Font Awesome: a free icon library. Loading this one file lets us use
+    icons anywhere with <i class="fa-brands fa-tiktok"></i> etc.
+    It must come BEFORE style.css so our own styles can adjust the icons.
+  -->
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
+  <!--
+    ===== 0. NAV BAR =====
+    position: fixed keeps it at the top of the screen.
+    It starts hidden; script.js adds the class "show" once the hero
+    is scrolled out of view.
+  -->
+  <nav class="site-nav" aria-label="Main">
+    <div class="nav-inner">
+      <!-- Small logo + name; clicking it goes back to the top -->
+      <!-- class="notranslate" tells Google Translate to leave the shop name alone -->
+      <a href="#top" class="nav-brand notranslate">
+        <img src="images/logo.png" alt="">
+        <span>Great Luck Minimart</span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="#find-us">Visit Us</a></li>
+        <li><a href="#socials">Follow Us</a></li>
+        <!-- Products is its own page, so this links to a different file -->
+        <li><a href="products.html" class="nav-cta">Products</a></li>
+      </ul>
+    </div>
+  </nav>
+
   <!-- ===== 1. HERO: the first thing visitors see ===== -->
-  <header class="hero">
-    <!--
-      LOGO PLACEHOLDER
-      When you have the logo, save it as logo.png in this folder and
-      replace the <div> below with:
-        <img src="logo.png" alt="Great Luck Minimart logo" class="logo">
-    -->
+  <!-- id="top" is where the nav-bar logo link jumps to -->
+  <header class="hero" id="top">
     <img src="images/logo.png" alt="Great Luck Minimart logo" class="logo">
 
-    <h1>Great Luck Minimart</h1>
+    <h1 class="notranslate">Great Luck Minimart</h1>
     <p class="tagline">Your neighbourhood minimart</p>
 
     <!-- Arrow hinting the visitor to scroll; links to the next section -->
@@ -36,28 +65,59 @@
 
   <main>
 
-    <!-- ===== 2. FIND US: map on the left, text on the right ===== -->
-    <section id="find-us" class="section reveal">
-      <div class="container two-col">
+    <!--
+      ===== 2. FIND US: intro on top, map + details below =====
+      "section-full" makes this section fill the whole screen, so clicking
+      Visit Us shows only this section.
+    -->
+    <section id="find-us" class="section section-full reveal">
+      <div class="container">
 
-        <!--
-          MAP PLACEHOLDER
-          To add the real map:
-            1. Search the shop on Google Maps
-            2. Click Share → Embed a map → Copy HTML
-            3. Replace the <div class="map-placeholder"> below with that <iframe>
-        -->
-        <div class="map">
-          <div class="map-placeholder">Google Maps goes here</div>
+        <!-- Heading + description, centred above everything -->
+        <div class="intro">
+          <h2>Visit Us</h2>
+          <p class="intro-text">Short description of the minimart goes here.</p>
         </div>
 
-        <!-- TEXT PLACEHOLDER: swap in real details later -->
-        <div class="info">
-          <h2>Visit Us</h2>
-          <p>Short description of the minimart goes here.</p>
-          <p><strong>Address:</strong> Blk 000 Street Name, #01-00, Singapore 000000</p>
-          <p><strong>Opening hours:</strong> Mon – Sun, 7:00am – 11:00pm</p>
-          <p><strong>Phone:</strong> 6000 0000</p>
+        <div class="two-col">
+          <!--
+            GOOGLE MAP (free, no API key needed)
+            The q= part is the search Google Maps runs: the listing name +
+            address, with + instead of spaces. loading="lazy" means the map
+            only loads when the visitor scrolls near it, so the page opens faster.
+
+            For the fullest info card (rating, "View larger map"), you can
+            swap this <iframe> for Google's official one:
+              Google Maps → search the shop → Share → Embed a map → Copy HTML
+          -->
+          <div class="map">
+            <iframe
+              src="https://maps.google.com/maps?q=Great+Luck+Myanmar+Minimart,+177+Toa+Payoh+Central,+Singapore&z=17&output=embed"
+              title="Map to Great Luck Myanmar Minimart"
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+              allowfullscreen></iframe>
+          </div>
+
+          <!-- Details next to the map -->
+          <div class="info">
+            <!-- Add the postal code at the end once confirmed -->
+            <p><strong>Address:</strong> Blk 177 Toa Payoh Central, #01-154B, Singapore</p>
+            <p><strong>Opening hours:</strong> Mon – Sun, 7:00am – 11:00pm</p>
+            <!--
+              Opens the live Google listing, so visitors always see the latest
+              hours even if the text above is out of date.
+              This "maps/search/?api=1&query=..." format is Google's official
+              way to link to a place; the query is the listing name + address.
+            -->
+            <p class="hours-link">
+              <a href="https://www.google.com/maps/search/?api=1&query=Great+Luck+Myanmar+Minimart+177+Toa+Payoh+Central+Singapore"
+                 target="_blank" rel="noopener">Check today's hours on Google ↗</a>
+            </p>
+            <!-- Numbers taken from the logo; tel: and wa.me make them tappable on phones -->
+            <p><strong>Phone:</strong> <a href="tel:+6586732131">8673 2131</a></p>
+            <p><strong>WhatsApp:</strong> <a href="https://wa.me/6580357281" target="_blank" rel="noopener">8035 7281</a></p>
+          </div>
         </div>
 
       </div>
@@ -69,27 +129,103 @@
         <h2>Follow Us</h2>
         <p>See what's new in store.</p>
 
-        <div class="social-links">
-          <!--
-            target="_blank" opens the link in a new tab;
-            rel="noopener" is a security best practice that goes with it.
-          -->
-          <a href="https://www.tiktok.com/@great.luck.myanmar"
-             class="social-btn tiktok" target="_blank" rel="noopener">TikTok</a>
+        <!--
+          Three columns: each one is a button with its video right below.
+          On phones the columns stack on top of each other.
 
-          <a href="https://www.facebook.com/p/%E1%80%99%E1%80%BC%E1%80%94%E1%80%BA%E1%80%99%E1%80%AC%E1%80%99%E1%80%AE%E1%80%94%E1%80%AE%E1%80%99%E1%80%90%E1%80%BA-The-Great-Luck-61589895800291/"
-             class="social-btn facebook" target="_blank" rel="noopener">Facebook</a>
+          NOTE: the embeds often stay blank if you open index.html straight
+          from your folder. View the page through a local server (e.g. VS
+          Code's "Live Server" extension) or the hosted site to see them.
+        -->
+        <div class="social-grid">
 
-          <!--
-            Instagram isn't ready yet, so this is a <span>, not an <a>:
-            a span has no link, so it can't be clicked.
-            When the account is live, change it to:
-            <a href="INSTAGRAM_URL" class="social-btn instagram" target="_blank" rel="noopener">Instagram</a>
-          -->
-          <span class="social-btn instagram disabled" aria-disabled="true">
-            Instagram
-            <small>In progress</small>
-          </span>
+          <!-- ----- Column 1: TikTok ----- -->
+          <div class="social-col">
+            <!--
+              target="_blank" opens the link in a new tab;
+              rel="noopener" is a security best practice that goes with it.
+            -->
+            <a href="https://www.tiktok.com/@great.luck.myanmar"
+               class="social-btn tiktok" target="_blank" rel="noopener">
+              <!-- aria-hidden: screen readers skip the icon and just read "TikTok" -->
+              <i class="fa-brands fa-tiktok" aria-hidden="true"></i>
+              <span>TikTok</span>
+            </a>
+
+            <!--
+              TikTok "creator embed": shows the account's recent videos.
+              The <script> loads TikTok's code, which turns this
+              <blockquote> into the video feed.
+            -->
+            <div class="video-card">
+              <blockquote class="tiktok-embed"
+                          cite="https://www.tiktok.com/@great.luck.myanmar"
+                          data-unique-id="great.luck.myanmar"
+                          data-embed-type="creator"
+                          style="max-width: 780px; min-width: 288px;">
+                <section>
+                  <a target="_blank" rel="noopener"
+                     href="https://www.tiktok.com/@great.luck.myanmar?refer=creator_embed">@great.luck.myanmar</a>
+                </section>
+              </blockquote>
+              <script async src="https://www.tiktok.com/embed.js"></script>
+            </div>
+          </div>
+
+          <!-- ----- Column 2: Facebook ----- -->
+          <div class="social-col">
+            <a href="https://www.facebook.com/p/%E1%80%99%E1%80%BC%E1%80%94%E1%80%BA%E1%80%99%E1%80%AC%E1%80%99%E1%80%AE%E1%80%94%E1%80%AE%E1%80%99%E1%80%90%E1%80%BA-The-Great-Luck-61589895800291/"
+               class="social-btn facebook" target="_blank" rel="noopener">
+              <i class="fa-brands fa-facebook-f" aria-hidden="true"></i>
+              <span>Facebook</span>
+            </a>
+
+            <!--
+              Facebook "Page Plugin": shows the latest posts (incl. videos).
+              The href inside the src is the page address, URL-encoded
+              (":" becomes %3A and "/" becomes %2F).
+              If this box stays blank, Facebook is refusing to embed this page
+              type. The fallback is to embed one specific video instead:
+              open the video on Facebook → "..." → Embed → copy the <iframe>
+              and paste it here in place of this one.
+            -->
+            <div class="video-card">
+              <iframe class="fb-feed"
+                      src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2F61589895800291&tabs=timeline&width=340&height=560&small_header=true&adapt_container_width=true&hide_cover=false&show_facepile=false"
+                      width="340" height="560"
+                      scrolling="no" frameborder="0" allowfullscreen="true"
+                      allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+                      title="Great Luck Minimart on Facebook"></iframe>
+            </div>
+          </div>
+
+          <!-- ----- Column 3: Instagram (not ready yet) ----- -->
+          <div class="social-col">
+            <!--
+              Instagram isn't ready yet, so this is a <span>, not an <a>:
+              a span has no link, so it can't be clicked.
+              When the account is live, change it to:
+              <a href="INSTAGRAM_URL" class="social-btn instagram" target="_blank" rel="noopener">
+                <i class="fa-brands fa-instagram" aria-hidden="true"></i>
+                <span>Instagram</span>
+              </a>
+            -->
+            <span class="social-btn instagram disabled" aria-disabled="true">
+              <i class="fa-brands fa-instagram" aria-hidden="true"></i>
+              <span>
+                Instagram
+                <small>In progress</small>
+              </span>
+            </span>
+
+            <!-- Placeholder card in the spot where the video will go -->
+            <div class="video-card video-placeholder">
+              <span class="placeholder-icon">🚧</span>
+              <p><strong>In progress</strong></p>
+              <p>Our Instagram is coming soon. Stay tuned!</p>
+            </div>
+          </div>
+
         </div>
       </div>
     </section>
@@ -101,6 +237,32 @@
     <p>&copy; <span id="year"></span> Great Luck Minimart</p>
   </footer>
 
+  <!--
+    ===== 5. GOOGLE TRANSLATE =====
+    Floating language picker in the bottom-right corner.
+    - Our own <select> lists each language IN that language, so visitors
+      can recognise theirs.
+    - Google's widget still loads into #google_translate_element, but it is
+      hidden; script.js passes our choice on to it.
+    - "notranslate" stops Google from translating the language names themselves.
+  -->
+  <div class="translate-box notranslate">
+    <i class="fa-solid fa-globe" aria-hidden="true"></i>
+    <select id="lang-select" aria-label="Choose language">
+      <option value="en">English</option>
+      <option value="my">မြန်မာ</option>
+      <option value="zh-CN">中文</option>
+      <option value="ms">Bahasa Melayu</option>
+      <option value="ta">தமிழ்</option>
+    </select>
+    <div id="google_translate_element"></div>
+  </div>
+
   <script src="script.js"></script>
+  <!--
+    Google's translator script. It must load AFTER script.js, because it
+    calls googleTranslateElementInit(), which is defined in script.js.
+  -->
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 </body>
 </html>
