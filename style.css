@@ -148,6 +148,9 @@ section {
   /*
     Deep green tint: darker at the top and bottom, slightly lighter in the
     middle. Keeps the green theme but is dark enough for white text to pop.
+
+    var(--hero-image, ...) means: use the photo uploaded on admin.html if
+    there is one (site-common.js sets --hero-image), otherwise images/hero.jpg.
   */
   background:
     linear-gradient(
@@ -155,7 +158,7 @@ section {
       rgba(20, 70, 28, 0.6) 50%,
       rgba(8, 35, 12, 0.8)
     ),
-    url("images/hero.jpg") center / cover no-repeat;
+    var(--hero-image, url("images/hero.jpg")) center / cover no-repeat;
   color: #fff;
   position: relative;         /* lets .scroll-hint position itself inside */
 }
@@ -628,6 +631,12 @@ body {
   background: rgba(255, 255, 255, 0.15);
 }
 
+/* The Products button is already highlighted, so on its own page it
+   goes white instead of see-through (keeps the dark text readable) */
+.nav-links a.nav-cta.current {
+  background: #fff;
+}
+
 /* Products section: fills at least the rest of the screen */
 .products-section {
   min-height: 55vh;
@@ -695,5 +704,540 @@ body {
 @media (max-width: 768px) {
   .hero.page-hero {
     min-height: 35vh;
+  }
+}
+/* ----- Categories on the products page ----- */
+
+/* Quick links to each category, as pills under the description */
+.category-chips {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+.category-chips a {
+  padding: 8px 18px;
+  border: 1px solid var(--color-primary);
+  border-radius: 999px;
+  color: var(--color-primary);
+  font-weight: 600;
+  text-decoration: none;
+  background: #fff;
+  transition: background 0.2s, color 0.2s;
+}
+
+.category-chips a:hover {
+  background: var(--color-primary);
+  color: #fff;
+}
+
+/* One section per category */
+.category-section {
+  margin-top: 56px;
+  text-align: left;
+  scroll-margin-top: 90px;    /* quick links land below the fixed nav bar */
+}
+
+/* Category heading with a thin line running to the right */
+.category-title {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 0;
+  font-size: 1.6rem;
+  color: var(--color-primary-dark);
+}
+
+.category-title::after {
+  content: "";
+  flex: 1;                    /* the line fills the leftover space */
+  height: 2px;
+  background: var(--color-accent);
+}
+
+/* The grid sits closer to its own heading than to the page top */
+.category-section .product-grid {
+  margin-top: 20px;
+}
+
+/* Shown while loading, or if there are no products */
+.grid-message {
+  color: #666;
+  padding: 24px 0;
+}
+
+/* A product with no photo shows the logo, shrunk to fit */
+.product-card img.no-photo {
+  object-fit: contain;
+  padding: 32px;
+  background: #fff;           /* matches the logo's white corners */
+}
+
+/* Instagram card on the home page, once a link is saved in the admin */
+.instagram-card {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  min-height: 220px;
+}
+
+.instagram-card p {
+  margin: 8px 0 0;
+}
+
+.instagram-card a {
+  color: #bc1888;
+  font-weight: 600;
+}
+
+.instagram-card-icon {
+  font-size: 3rem;
+  color: #dc2743;
+}
+
+/* ---------- 10. Admin page ---------- */
+/*
+  Only used on admin.html (<body class="admin-page">).
+*/
+
+/* Make sure anything with the "hidden" attribute really is hidden,
+   even if another rule gives it display: flex */
+.admin-page [hidden] {
+  display: none !important;
+}
+
+.admin-page {
+  background: var(--color-bg-alt);
+  min-height: 100vh;
+}
+
+/* ----- Top bar ----- */
+.admin-bar {
+  background: var(--color-primary-dark);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+}
+
+.admin-bar-inner {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 10px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.admin-bar-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.admin-link {
+  color: #fff;
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+.admin-link:hover {
+  text-decoration: underline;
+}
+
+.admin-main {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 28px 16px 64px;
+}
+
+/* ----- Tabs ----- */
+.admin-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #d6e4d6;
+}
+
+.admin-tab {
+  font: inherit;
+  font-weight: 600;
+  padding: 10px 18px;
+  border: none;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -2px;        /* sit on top of the grey line */
+  background: none;
+  color: #555;
+  cursor: pointer;
+}
+
+.admin-tab:hover {
+  color: var(--color-primary);
+}
+
+.admin-tab.is-active {
+  color: var(--color-primary);
+  border-bottom-color: var(--color-primary);
+}
+
+/* Cards in a panel stack with even gaps */
+.admin-panel,
+.category-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.category-list:empty {
+  display: none;
+}
+
+/* ----- Cards ----- */
+.admin-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+}
+
+.admin-card h1,
+.admin-card h2 {
+  margin: 0 0 6px;
+  color: var(--color-primary);
+}
+
+.admin-hint {
+  margin: 0 0 16px;
+  color: #666;
+  font-size: 0.95rem;
+  font-weight: 400;
+}
+
+.login-card {
+  max-width: 420px;
+  margin: 48px auto;
+}
+
+.admin-empty {
+  text-align: center;
+  color: #666;
+  padding: 24px;
+}
+
+/* ----- Forms ----- */
+.admin-card form,
+.admin-dialog form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.admin-page label,
+.field-label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.admin-page input[type="text"],
+.admin-page input[type="email"],
+.admin-page input[type="password"],
+.admin-page input[type="tel"],
+.admin-page input[type="url"],
+.admin-page input[type="number"],
+.admin-page textarea,
+.admin-page select {
+  width: 100%;
+  min-width: 0;               /* lets boxes shrink to fit side-by-side rows */
+  font: inherit;
+  font-weight: 400;
+  padding: 10px 12px;
+  border: 1px solid #cfd8cf;
+  border-radius: 8px;
+  background: #fff;
+  color: var(--color-text);
+}
+
+.admin-page textarea {
+  resize: vertical;
+}
+
+/* Green outline when you click into a box */
+.admin-page input:focus,
+.admin-page textarea:focus,
+.admin-page select:focus {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 1px;
+  border-color: var(--color-primary);
+}
+
+.admin-page input[type="file"] {
+  font-weight: 400;
+}
+
+/* Two boxes side by side (Phone + WhatsApp) */
+.form-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 14px;
+}
+
+/* Text box + button on one line (Add category) */
+.admin-page .inline-form {
+  flex-direction: row;
+  gap: 10px;
+}
+
+.form-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.image-preview {
+  width: 160px;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 1px solid #e0e0e0;
+}
+
+.hero-preview {
+  width: 100%;
+  max-width: 420px;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 1px solid #e0e0e0;
+}
+
+.map-preview {
+  max-width: 420px;
+  border: 1px solid #e0e0e0;
+}
+
+/* Status line under each form; red when it's an error */
+.form-message {
+  margin: 0;
+  min-height: 1.6em;          /* keeps the layout steady when text appears */
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+.form-message:empty {
+  min-height: 0;
+}
+
+.form-message.is-error {
+  color: #c62828;
+}
+
+/* ----- Buttons ----- */
+.admin-btn {
+  font: inherit;
+  font-weight: 600;
+  padding: 10px 20px;
+  border: 1px solid var(--color-primary);
+  border-radius: 999px;
+  background: var(--color-primary);
+  color: #fff;
+  cursor: pointer;
+  align-self: flex-start;     /* don't stretch to the full form width */
+  white-space: nowrap;
+  transition: background 0.2s;
+}
+
+.admin-btn:hover {
+  background: var(--color-primary-dark);
+}
+
+.admin-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* Outline-only button (Cancel, Edit, Rename, arrows) */
+.admin-btn-ghost {
+  background: transparent;
+  color: var(--color-primary);
+}
+
+.admin-btn-ghost:hover {
+  background: var(--color-bg-alt);
+}
+
+/* Log out sits on the dark green bar */
+.admin-bar .admin-btn-ghost {
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.6);
+}
+
+.admin-bar .admin-btn-ghost:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.admin-btn-danger {
+  background: transparent;
+  border-color: #e57373;
+  color: #c62828;
+}
+
+.admin-btn-danger:hover {
+  background: #fdecea;
+}
+
+.admin-btn-small {
+  padding: 6px 14px;
+  font-size: 0.9rem;
+}
+
+/* ----- Category boxes ----- */
+.category-box {
+  border-left: 5px solid var(--color-primary);
+}
+
+.category-head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.category-head h3 {
+  margin: 0;
+  font-size: 1.3rem;
+  color: var(--color-primary-dark);
+}
+
+.category-head .admin-hint {
+  flex-basis: 100%;
+  margin: 0;
+}
+
+.category-count {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #777;
+  margin-left: 4px;
+}
+
+.category-tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.add-product-btn {
+  margin-top: 12px;
+}
+
+/* ----- Product rows ----- */
+.admin-product-list {
+  list-style: none;
+  margin: 12px 0 0;
+  padding: 0;
+}
+
+.admin-product-list:empty::before {
+  content: "No products in this category yet.";
+  display: block;
+  color: #888;
+  padding: 8px 0;
+}
+
+/* Each row: photo | name + price | Edit + Delete */
+.admin-product {
+  display: grid;
+  grid-template-columns: 64px 1fr auto;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 0;
+  border-top: 1px solid #eee;
+}
+
+.admin-product img {
+  width: 64px;
+  height: 48px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.admin-product img.no-photo {
+  object-fit: contain;
+  background: #fff;
+  border: 1px solid #eee;
+}
+
+.admin-product-info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.admin-product-info span {
+  color: #666;
+}
+
+.admin-product-actions {
+  display: flex;
+  gap: 8px;
+}
+
+/* ----- Product pop-up ----- */
+.admin-dialog {
+  width: min(520px, calc(100% - 32px));
+  max-height: calc(100vh - 32px);
+  border: none;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+/* The dimmed page behind the pop-up */
+.admin-dialog::backdrop {
+  background: rgba(10, 30, 12, 0.55);
+}
+
+.admin-dialog h2 {
+  margin: 0;
+  color: var(--color-primary);
+}
+
+/* ----- Admin page on phones ----- */
+@media (max-width: 600px) {
+  .admin-link {
+    display: none;            /* keep the bar uncluttered */
+  }
+
+  .admin-card {
+    padding: 18px;
+  }
+
+  .form-row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .admin-page .inline-form {
+    flex-direction: column;
+  }
+
+  /* Photo + name on one line, buttons underneath */
+  .admin-product {
+    grid-template-columns: 64px 1fr;
+  }
+
+  .admin-product-actions {
+    grid-column: 1 / -1;
   }
 }

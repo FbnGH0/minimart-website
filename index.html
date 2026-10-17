@@ -4,6 +4,9 @@
   Layout, top to bottom:
     0. Nav bar – hidden on the hero, slides down once you scroll past it
     1. Hero    – logo + store name
+  Most text, links, the map and the hero photo are edited on admin.html;
+  home.js swaps them in. What's typed here is the backup if the database
+  can't be reached.
     2. Find Us – centred intro on top, then map (left) + details (right);
                  fills the whole screen
     3. Socials – TikTok / Facebook / Instagram buttons, each with its video below
@@ -57,7 +60,7 @@
     <img src="images/logo.png" alt="Great Luck Minimart logo" class="logo">
 
     <h1 class="notranslate">Great Luck Minimart</h1>
-    <p class="tagline">Your neighbourhood minimart</p>
+    <p class="tagline" id="site-tagline">Your neighbourhood minimart</p>
 
     <!-- Arrow hinting the visitor to scroll; links to the next section -->
     <a href="#find-us" class="scroll-hint" aria-label="Scroll down">↓</a>
@@ -76,22 +79,19 @@
         <!-- Heading + description, centred above everything -->
         <div class="intro">
           <h2>Visit Us</h2>
-          <p class="intro-text">Short description of the minimart goes here.</p>
+          <p class="intro-text" id="shop-description">Short description of the minimart goes here.</p>
         </div>
 
         <div class="two-col">
           <!--
             GOOGLE MAP (free, no API key needed)
-            The q= part is the search Google Maps runs: the listing name +
-            address, with + instead of spaces. loading="lazy" means the map
-            only loads when the visitor scrolls near it, so the page opens faster.
-
-            For the fullest info card (rating, "View larger map"), you can
-            swap this <iframe> for Google's official one:
-              Google Maps → search the shop → Share → Embed a map → Copy HTML
+            The location is set on admin.html ("Map location"), and home.js
+            updates the src below. loading="lazy" means the map only loads
+            when the visitor scrolls near it, so the page opens faster.
           -->
           <div class="map">
             <iframe
+              id="shop-map"
               src="https://maps.google.com/maps?q=Great+Luck+Myanmar+Minimart,+177+Toa+Payoh+Central,+Singapore&z=17&output=embed"
               title="Map to Great Luck Myanmar Minimart"
               loading="lazy"
@@ -101,9 +101,9 @@
 
           <!-- Details next to the map -->
           <div class="info">
-            <!-- Add the postal code at the end once confirmed -->
-            <p><strong>Address:</strong> Blk 177 Toa Payoh Central, #01-154B, Singapore</p>
-            <p><strong>Opening hours:</strong> Mon – Sun, 7:00am – 11:00pm</p>
+            <!-- The ids let home.js swap in the details saved on admin.html -->
+            <p><strong>Address:</strong> <span id="shop-address">Blk 177 Toa Payoh Central, #01-154B, Singapore</span></p>
+            <p><strong>Opening hours:</strong> <span id="shop-hours">Mon – Sun, 7:00am – 11:00pm</span></p>
             <!--
               Opens the live Google listing, so visitors always see the latest
               hours even if the text above is out of date.
@@ -112,11 +112,11 @@
             -->
             <p class="hours-link">
               <a href="https://www.google.com/maps/search/?api=1&query=Great+Luck+Myanmar+Minimart+177+Toa+Payoh+Central+Singapore"
-                 target="_blank" rel="noopener">Check today's hours on Google ↗</a>
+                 id="hours-link" target="_blank" rel="noopener">Check today's hours on Google ↗</a>
             </p>
-            <!-- Numbers taken from the logo; tel: and wa.me make them tappable on phones -->
-            <p><strong>Phone:</strong> <a href="tel:+6586732131">8673 2131</a></p>
-            <p><strong>WhatsApp:</strong> <a href="https://wa.me/6580357281" target="_blank" rel="noopener">8035 7281</a></p>
+            <!-- tel: and wa.me make the numbers tappable on phones -->
+            <p><strong>Phone:</strong> <a href="tel:+6586732131" id="shop-phone">8673 2131</a></p>
+            <p><strong>WhatsApp:</strong> <a href="https://wa.me/6580357281" id="shop-whatsapp" target="_blank" rel="noopener">8035 7281</a></p>
           </div>
         </div>
 
@@ -145,7 +145,7 @@
               target="_blank" opens the link in a new tab;
               rel="noopener" is a security best practice that goes with it.
             -->
-            <a href="https://www.tiktok.com/@great.luck.myanmar"
+            <a href="https://www.tiktok.com/@great.luck.myanmar" id="tiktok-link"
                class="social-btn tiktok" target="_blank" rel="noopener">
               <!-- aria-hidden: screen readers skip the icon and just read "TikTok" -->
               <i class="fa-brands fa-tiktok" aria-hidden="true"></i>
@@ -154,11 +154,12 @@
 
             <!--
               TikTok "creator embed": shows the account's recent videos.
-              The <script> loads TikTok's code, which turns this
-              <blockquote> into the video feed.
+              TikTok's script turns this <blockquote> into the video feed.
+              home.js loads that script AFTER checking the saved TikTok link,
+              so the feed always matches the link set on admin.html.
             -->
             <div class="video-card">
-              <blockquote class="tiktok-embed"
+              <blockquote class="tiktok-embed" id="tiktok-embed"
                           cite="https://www.tiktok.com/@great.luck.myanmar"
                           data-unique-id="great.luck.myanmar"
                           data-embed-type="creator"
@@ -168,14 +169,13 @@
                      href="https://www.tiktok.com/@great.luck.myanmar?refer=creator_embed">@great.luck.myanmar</a>
                 </section>
               </blockquote>
-              <script async src="https://www.tiktok.com/embed.js"></script>
             </div>
           </div>
 
           <!-- ----- Column 2: Facebook ----- -->
           <div class="social-col">
             <a href="https://www.facebook.com/p/%E1%80%99%E1%80%BC%E1%80%94%E1%80%BA%E1%80%99%E1%80%AC%E1%80%99%E1%80%AE%E1%80%94%E1%80%AE%E1%80%99%E1%80%90%E1%80%BA-The-Great-Luck-61589895800291/"
-               class="social-btn facebook" target="_blank" rel="noopener">
+               id="facebook-link" class="social-btn facebook" target="_blank" rel="noopener">
               <i class="fa-brands fa-facebook-f" aria-hidden="true"></i>
               <span>Facebook</span>
             </a>
@@ -190,7 +190,7 @@
               and paste it here in place of this one.
             -->
             <div class="video-card">
-              <iframe class="fb-feed"
+              <iframe class="fb-feed" id="facebook-feed"
                       src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2F61589895800291&tabs=timeline&width=340&height=560&small_header=true&adapt_container_width=true&hide_cover=false&show_facepile=false"
                       width="340" height="560"
                       scrolling="no" frameborder="0" allowfullscreen="true"
@@ -199,16 +199,12 @@
             </div>
           </div>
 
-          <!-- ----- Column 3: Instagram (not ready yet) ----- -->
-          <div class="social-col">
+          <!-- ----- Column 3: Instagram ----- -->
+          <div class="social-col" id="instagram-col">
             <!--
-              Instagram isn't ready yet, so this is a <span>, not an <a>:
-              a span has no link, so it can't be clicked.
-              When the account is live, change it to:
-              <a href="INSTAGRAM_URL" class="social-btn instagram" target="_blank" rel="noopener">
-                <i class="fa-brands fa-instagram" aria-hidden="true"></i>
-                <span>Instagram</span>
-              </a>
+              Shows "In progress" until an Instagram link is saved on
+              admin.html. Then home.js swaps this <span> for a real link and
+              the placeholder card for a "Follow us" card.
             -->
             <span class="social-btn instagram disabled" aria-disabled="true">
               <i class="fa-brands fa-instagram" aria-hidden="true"></i>
@@ -258,6 +254,14 @@
     <div id="google_translate_element"></div>
   </div>
 
+  <!--
+    Order matters: Supabase's library, then supabase-config.js (creates
+    "db"), then site-common.js (shared helpers), then home.js.
+  -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.3"></script>
+  <script src="supabase-config.js"></script>
+  <script src="site-common.js"></script>
+  <script src="home.js"></script>
   <script src="script.js"></script>
   <!--
     Google's translator script. It must load AFTER script.js, because it

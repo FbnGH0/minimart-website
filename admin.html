@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<!--
+  admin.html = the ADMIN screen. Not linked from the public site; the owner
+  goes to yoursite.com/admin.html directly.
+
+  Layout:
+    - Top bar          – logo, "View site", Log out
+    - Login view       – shown when nobody is logged in
+    - Dashboard view   – two tabs:
+        Products   – products page text, categories, products in each
+        Home page  – hero, Visit Us (incl. map), Follow Us links
+    - Product pop-up   – the form for adding / editing one product
+
+  Hiding the page isn't what keeps it safe. The security rules in setup.sql
+  are: without logging in, the database refuses every change.
+-->
+<html lang="en">
+<head>
+  <link rel="icon" href="images/favicon.png" type="image/png">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Asks search engines not to list this page -->
+  <meta name="robots" content="noindex, nofollow">
+  <title>Admin | Great Luck Minimart</title>
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="admin-page">
+
+  <!-- ===== TOP BAR ===== -->
+  <header class="admin-bar">
+    <div class="admin-bar-inner">
+      <a href="index.html" class="nav-brand">
+        <img src="images/logo.png" alt="">
+        <span>Great Luck Admin</span>
+      </a>
+      <div class="admin-bar-actions">
+        <a href="index.html" class="admin-link" target="_blank" rel="noopener">
+          <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>
+          View site
+        </a>
+        <!-- "hidden" until someone logs in -->
+        <button type="button" id="logout-btn" class="admin-btn admin-btn-ghost" hidden>Log out</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="admin-main">
+
+    <!-- ===== LOGIN VIEW ===== -->
+    <section id="login-view" class="admin-card login-card" hidden>
+      <h1>Admin login</h1>
+      <form id="login-form">
+        <label>
+          Email
+          <input type="email" id="login-email" required autocomplete="username">
+        </label>
+        <label>
+          Password
+          <input type="password" id="login-password" required autocomplete="current-password">
+        </label>
+        <button type="submit" class="admin-btn">Log in</button>
+        <!-- role="alert": screen readers announce error messages here -->
+        <p class="form-message" id="login-message" role="alert"></p>
+      </form>
+    </section>
+
+    <!-- ===== DASHBOARD VIEW ===== -->
+    <div id="dashboard-view" hidden>
+
+      <!-- Tabs: each button shows the panel with the matching id -->
+      <div class="admin-tabs" role="tablist">
+        <button type="button" class="admin-tab is-active" role="tab" data-panel="panel-products">
+          <i class="fa-solid fa-basket-shopping" aria-hidden="true"></i> Products
+        </button>
+        <button type="button" class="admin-tab" role="tab" data-panel="panel-home">
+          <i class="fa-solid fa-house" aria-hidden="true"></i> Home page
+        </button>
+      </div>
+
+      <!-- ================= PRODUCTS TAB ================= -->
+      <div id="panel-products" class="admin-panel">
+
+        <!--
+          "settings-form" forms save to the site_settings table.
+          Each input's name="" is the column it saves to.
+        -->
+        <section class="admin-card">
+          <h2>Products page text</h2>
+          <p class="admin-hint">The heading and description above the products.</p>
+          <form class="settings-form">
+            <label>
+              Heading
+              <input type="text" name="products_heading">
+            </label>
+            <label>
+              Description
+              <textarea name="products_description" rows="2"></textarea>
+            </label>
+            <button type="submit" class="admin-btn">Save</button>
+            <p class="form-message" role="status"></p>
+          </form>
+        </section>
+
+        <section class="admin-card">
+          <h2>Categories</h2>
+          <p class="admin-hint">
+            Each category is its own section on the Products page, in the order shown here.
+            Empty categories are hidden from visitors.
+          </p>
+          <form id="category-form" class="inline-form">
+            <input type="text" id="category-name" placeholder="New category, e.g. Drinks" required
+                   aria-label="New category name">
+            <button type="submit" class="admin-btn">
+              <i class="fa-solid fa-plus" aria-hidden="true"></i> Add category
+            </button>
+          </form>
+          <p class="form-message" id="catalog-message" role="status"></p>
+        </section>
+
+        <!-- admin.js builds one box per category in here -->
+        <div id="category-list" class="category-list"></div>
+      </div>
+
+      <!-- ================= HOME PAGE TAB ================= -->
+      <div id="panel-home" class="admin-panel" hidden>
+
+        <section class="admin-card">
+          <h2>Top of the page</h2>
+          <p class="admin-hint">The big banner with the logo and shop name.</p>
+          <form class="settings-form" id="hero-form">
+            <label>
+              Tagline (under the shop name)
+              <input type="text" name="tagline">
+            </label>
+            <div class="field">
+              <span class="field-label">Background photo</span>
+              <img id="hero-preview" class="hero-preview" src="images/hero.jpg" alt="Current background photo">
+              <input type="file" id="hero-image" accept="image/*" aria-label="Choose a new background photo">
+              <button type="button" id="hero-reset-btn" class="admin-btn admin-btn-ghost admin-btn-small" hidden>
+                Go back to the original photo
+              </button>
+            </div>
+            <button type="submit" class="admin-btn">Save</button>
+            <p class="form-message" role="status"></p>
+          </form>
+        </section>
+
+        <section class="admin-card">
+          <h2>Visit Us</h2>
+          <form class="settings-form">
+            <label>
+              Short description
+              <textarea name="visit_description" rows="3"></textarea>
+            </label>
+            <label>
+              Address
+              <input type="text" name="address">
+            </label>
+            <label>
+              Opening hours
+              <input type="text" name="hours" placeholder="e.g. Mon – Sun, 7:00am – 11:00pm">
+            </label>
+            <div class="form-row">
+              <label>
+                Phone
+                <input type="tel" name="phone" placeholder="8673 2131">
+              </label>
+              <label>
+                WhatsApp
+                <input type="tel" name="whatsapp" placeholder="8035 7281">
+              </label>
+            </div>
+            <label>
+              Map location
+              <textarea name="map_location" id="map-location" rows="2"></textarea>
+            </label>
+            <p class="admin-hint">
+              Type the shop name and address, or paste the code from
+              Google Maps → Share → Embed a map → Copy HTML.
+            </p>
+            <!-- Live preview: admin.js updates it as you type -->
+            <div class="map map-preview">
+              <iframe id="map-preview" title="Map preview" loading="lazy"></iframe>
+            </div>
+            <button type="submit" class="admin-btn">Save</button>
+            <p class="form-message" role="status"></p>
+          </form>
+        </section>
+
+        <section class="admin-card">
+          <h2>Follow Us</h2>
+          <p class="admin-hint">Paste the full link to each profile.</p>
+          <form class="settings-form">
+            <label>
+              <span><i class="fa-brands fa-tiktok" aria-hidden="true"></i> TikTok</span>
+              <input type="url" name="tiktok_url" placeholder="https://www.tiktok.com/@yourname">
+            </label>
+            <label>
+              <span><i class="fa-brands fa-facebook-f" aria-hidden="true"></i> Facebook</span>
+              <input type="url" name="facebook_url" placeholder="https://www.facebook.com/...">
+            </label>
+            <label>
+              <span><i class="fa-brands fa-instagram" aria-hidden="true"></i> Instagram</span>
+              <input type="url" name="instagram_url" placeholder="Leave empty to show &quot;In progress&quot;">
+            </label>
+            <button type="submit" class="admin-btn">Save</button>
+            <p class="form-message" role="status"></p>
+          </form>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <!--
+    ===== PRODUCT POP-UP =====
+    <dialog> is a built-in pop-up box. admin.js opens it with showModal(),
+    which also dims the page behind it. Pressing Esc closes it.
+  -->
+  <dialog id="product-dialog" class="admin-dialog" aria-labelledby="product-dialog-title">
+    <form id="product-form">
+      <h2 id="product-dialog-title">Add a product</h2>
+      <!-- Empty when adding; holds the product's id when editing -->
+      <input type="hidden" id="product-id">
+      <label>
+        Category
+        <select id="product-category"></select>
+      </label>
+      <label>
+        Name
+        <input type="text" id="product-name" required>
+      </label>
+      <label>
+        Description
+        <textarea id="product-description" rows="3"></textarea>
+      </label>
+      <label>
+        Price ($)
+        <input type="number" id="product-price" min="0" step="0.01" required>
+      </label>
+      <label>
+        Photo
+        <input type="file" id="product-image" accept="image/*">
+      </label>
+      <img id="product-image-preview" class="image-preview" alt="Photo preview" hidden>
+      <div class="form-actions">
+        <button type="submit" class="admin-btn" id="product-save-btn">Add product</button>
+        <button type="button" class="admin-btn admin-btn-ghost" id="product-cancel-btn">Cancel</button>
+      </div>
+      <p class="form-message" id="product-message" role="status"></p>
+    </form>
+  </dialog>
+
+  <!--
+    Order matters:
+      1. Supabase's library (creates window.supabase)
+      2. supabase-config.js (uses it to create "db")
+      3. site-common.js (helpers shared with the public pages, e.g. the map)
+      4. admin.js (uses all of the above)
+    script.js isn't loaded here: this page has no hero or nav to animate.
+  -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.3"></script>
+  <script src="supabase-config.js"></script>
+  <script src="site-common.js"></script>
+  <script src="admin.js"></script>
+</body>
+</html>

@@ -8,7 +8,8 @@
   Layout, top to bottom:
     0. Nav bar      – same as the home page, but always visible here
     1. Page header  – short version of the home page hero
-    2. Products     – a grid of product cards (one sample for now)
+    2. Products     – one section per category, loaded from Supabase
+                      (products and categories are managed on admin.html)
     3. Footer
     4. Google Translate – same floating language button
 -->
@@ -21,7 +22,6 @@
   <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
   <link rel="stylesheet" href="style.css">
-
 </head>
 <body class="products-page">
 
@@ -59,37 +59,23 @@
     <!-- ===== 2. PRODUCTS ===== -->
     <section id="products" class="section section-alt products-section reveal">
       <div class="container center">
-        <h2>What's on the Shelf</h2>
-        <p>Short description of your products goes here.</p>
+        <!--
+          The heading and description are edited on admin.html. The text
+          typed here is a backup in case the database can't be reached.
+        -->
+        <h2 id="products-heading">What's on the Shelf</h2>
+        <p id="products-description">Short description of your products goes here.</p>
+
+        <!-- Quick links to each category; products.js fills these in -->
+        <nav class="category-chips" id="category-chips" aria-label="Product categories" hidden></nav>
 
         <!--
-          PRODUCT GRID
-          To add a product, copy one whole <article class="product-card">
-          block and paste it below the last one, then change the photo,
-          name, description and price. The grid arranges them automatically.
+          CATALOG: products.js builds one section per category in here,
+          each with a heading and a grid of product cards. The message
+          below shows until they arrive.
         -->
-        <div class="product-grid">
-
-          <!-- ----- Sample product ----- -->
-          <article class="product-card">
-            <!--
-              Placeholder photo from picsum.photos (random stock images).
-              To use your own: put the file in the images/ folder and change
-              the src to e.g. "images/nan-gyi-thoke.jpg".
-              Keep the alt text: it describes the photo for screen readers.
-            -->
-            <img src="https://picsum.photos/seed/nangyithoke/600/450"
-                 alt="Nan Gyi Thoke noodle salad"
-                 loading="lazy">
-            <div class="product-body">
-              <h3>Nan Gyi Thoke</h3>
-              <p>Burmese rice noodle salad tossed with chicken curry, chilli oil, crunchy fried onions and fresh herbs.</p>
-              <span class="product-price">$0.00</span>
-            </div>
-          </article>
-
-          <!-- Paste more product cards here -->
-
+        <div class="catalog" id="catalog">
+          <p class="grid-message">Loading products…</p>
         </div>
       </div>
     </section>
@@ -118,6 +104,14 @@
     <div id="google_translate_element"></div>
   </div>
 
+  <!--
+    Order matters: Supabase's library, then supabase-config.js (creates
+    "db"), then site-common.js (shared helpers), then products.js.
+  -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.3"></script>
+  <script src="supabase-config.js"></script>
+  <script src="site-common.js"></script>
+  <script src="products.js"></script>
   <script src="script.js"></script>
   <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 </body>
