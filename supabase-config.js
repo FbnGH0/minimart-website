@@ -7,8 +7,8 @@
   NEVER put the "secret" or "service_role" key here. That one ignores
   all the rules, and anyone could use it to wipe your data.
 */
-const SUPABASE_URL = "https://YOUR-PROJECT-ID.supabase.co";
-const SUPABASE_KEY = "YOUR-PUBLISHABLE-OR-ANON-KEY";
+const SUPABASE_URL = "https://cpjzlgmjbapwdmhqyxub.supabase.co";
+const SUPABASE_KEY = "sb_publishable_MYpnHDVtslQzcfYgZkBq1g_79RsN7mL";
 
 // The storage bucket created in setup.sql (product photos + hero photo)
 const IMAGE_BUCKET = "site-images";
