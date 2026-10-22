@@ -19,7 +19,6 @@ Website for **Great Luck Myanmar Minimart**, a neighbourhood minimart in Toa Pay
 
 ## Credits
 
-## Credits
 
 - **Fabian Leong:** front end (home page, admin panel) and back end (Supabase database, login, security rules), deployment
 - **Phone Myat Thit** ([@phonemyatthit08-spec](https://github.com/phonemyatthit08-spec)): lead designer, products page front end
