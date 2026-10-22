@@ -153,22 +153,18 @@
             </a>
 
             <!--
-              TikTok "creator embed": shows the account's recent videos.
-              TikTok's script turns this <blockquote> into the video feed.
-              home.js loads that script AFTER checking the saved TikTok link,
-              so the feed always matches the link set on admin.html.
+              TikTok profile embed: TikTok's own page showing the account's
+              profile and recent videos, loaded straight into an <iframe>.
+              (TikTok's embed.js script didn't build the feed reliably, so we
+              load the embed page directly instead.)
+              home.js swaps in the handle from the TikTok link set on admin.html.
             -->
             <div class="video-card">
-              <blockquote class="tiktok-embed" id="tiktok-embed"
-                          cite="https://www.tiktok.com/@great.luck.myanmar"
-                          data-unique-id="great.luck.myanmar"
-                          data-embed-type="creator"
-                          style="max-width: 780px; min-width: 288px;">
-                <section>
-                  <a target="_blank" rel="noopener"
-                     href="https://www.tiktok.com/@great.luck.myanmar?refer=creator_embed">@great.luck.myanmar</a>
-                </section>
-              </blockquote>
+              <iframe class="tiktok-feed" id="tiktok-feed"
+                      src="https://www.tiktok.com/embed/@great.luck.myanmar"
+                      title="Great Luck Minimart on TikTok"
+                      loading="lazy"
+                      allow="encrypted-media; fullscreen; picture-in-picture"></iframe>
             </div>
           </div>
 
@@ -181,21 +177,24 @@
             </a>
 
             <!--
-              Facebook "Page Plugin": shows the latest posts (incl. videos).
-              The href inside the src is the page address, URL-encoded
-              (":" becomes %3A and "/" becomes %2F).
-              If this box stays blank, Facebook is refusing to embed this page
-              type. The fallback is to embed one specific video instead:
-              open the video on Facebook → "..." → Embed → copy the <iframe>
-              and paste it here in place of this one.
+              Facebook "Page Plugin", header only: the page name, photo,
+              follower count and a Follow Page button.
+              Facebook's plugin doesn't show the posts timeline for this Page
+              (it only does for some Pages), so instead of a big empty box we
+              show the header plus a button to the latest posts.
+              The href inside the src is the page address, URL-encoded.
             -->
-            <div class="video-card">
+            <div class="video-card facebook-card">
               <iframe class="fb-feed" id="facebook-feed"
-                      src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2F61589895800291&tabs=timeline&width=340&height=560&small_header=true&adapt_container_width=true&hide_cover=false&show_facepile=false"
-                      width="340" height="560"
-                      scrolling="no" frameborder="0" allowfullscreen="true"
-                      allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+                      src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2F61589895800291&tabs&width=340&height=130&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=false"
+                      width="340" height="130"
+                      scrolling="no" frameborder="0"
                       title="Great Luck Minimart on Facebook"></iframe>
+              <p>See our latest posts, videos and promotions on Facebook.</p>
+              <a href="https://www.facebook.com/p/%E1%80%99%E1%80%BC%E1%80%94%E1%80%BA%E1%80%99%E1%80%AC%E1%80%99%E1%80%AE%E1%80%94%E1%80%AE%E1%80%99%E1%80%90%E1%80%BA-The-Great-Luck-61589895800291/"
+                 id="facebook-posts-link" class="facebook-posts-btn" target="_blank" rel="noopener">
+                See latest posts ↗
+              </a>
             </div>
           </div>
 

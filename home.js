@@ -2,7 +2,7 @@
   home.js = fills index.html with the details saved on admin.html:
     - hero: tagline + background photo
     - Visit Us: description, address, hours, phone, WhatsApp, map
-    - Follow Us: TikTok, Facebook and Instagram links (+ the feeds)
+    - Follow Us: TikTok, Facebook and Instagram links (+ the TikTok feed)
 
   The text already typed in index.html stays as a backup: anything that
   can't be loaded, or was left empty in the admin, keeps its HTML version.
@@ -49,38 +49,30 @@ function applyVisitUs(settings) {
 }
 
 // ----- TikTok -----
-// TikTok's script reads the <blockquote> once when it loads, so we
-// update the blockquote FIRST, then load the script.
-function setupTikTok(url) {
+// The feed is TikTok's embed page in an <iframe>. If the admin saved a
+// different TikTok link, point the button and the feed at that account.
+function applyTikTok(url) {
   const handle = (url || "").match(/@([\w.-]+)/);   // "@great.luck.myanmar" → great.luck.myanmar
-  if (isWebLink(url) && handle) {
-    document.getElementById("tiktok-link").href = url;
+  if (!isWebLink(url) || !handle) return;
 
-    const embed = document.getElementById("tiktok-embed");
-    embed.cite = "https://www.tiktok.com/@" + handle[1];
-    embed.dataset.uniqueId = handle[1];               // = data-unique-id="..."
-    const link = embed.querySelector("a");
-    link.href = `https://www.tiktok.com/@${handle[1]}?refer=creator_embed`;
-    link.textContent = "@" + handle[1];
-  }
-
-  const script = document.createElement("script");
-  script.src = "https://www.tiktok.com/embed.js";
-  script.async = true;
-  document.body.append(script);
+  document.getElementById("tiktok-link").href = url;
+  const feed = document.getElementById("tiktok-feed");
+  const newSrc = "https://www.tiktok.com/embed/@" + handle[1];
+  if (feed.src !== newSrc) feed.src = newSrc;   // only reload if it changed
 }
 
 // ----- Facebook -----
 function applyFacebook(url) {
   const button = document.getElementById("facebook-link");
-  // Only touch the feed if the link actually changed, so the working
-  // embed in index.html is kept otherwise
+  // Only touch it if the link actually changed, so the working
+  // version in index.html is kept otherwise
   if (!isWebLink(url) || url === button.getAttribute("href")) return;
 
   button.href = url;
+  document.getElementById("facebook-posts-link").href = url;
   document.getElementById("facebook-feed").src =
     "https://www.facebook.com/plugins/page.php?href=" + encodeURIComponent(url) +
-    "&tabs=timeline&width=340&height=560&small_header=true" +
+    "&tabs&width=340&height=130&small_header=false" +
     "&adapt_container_width=true&hide_cover=false&show_facepile=false";
 }
 
@@ -130,12 +122,10 @@ async function loadHomePage() {
     fillText("site-tagline", settings.tagline);
     applyHeroImage(settings);               // from site-common.js
     applyVisitUs(settings);
+    applyTikTok(settings.tiktok_url);
     applyFacebook(settings.facebook_url);
     applyInstagram(settings.instagram_url);
   }
-
-  // Always load TikTok, using the saved link if there is one
-  setupTikTok(settings ? settings.tiktok_url : null);
 }
 
 loadHomePage();
